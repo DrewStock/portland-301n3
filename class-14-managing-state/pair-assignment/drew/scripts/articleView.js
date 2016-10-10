@@ -13,17 +13,20 @@
   };
 
   // COMMENT: What does this method do?  What is it's execution path?
+  // Drew's comment: the variable 'template' is declared as a compiled Handlebars template
   articleView.populateFilters = function() {
     var options,
       template = Handlebars.compile($('#option-template').text());
 
     // Example of using model method with FP, synchronous approach:
     // NB: This method is dependant on info being in the DOM. Only authors of shown articles are loaded.
+    // Drew's comment: The variable 'options' is declared to populate the author filter using the .map method
     options = Article.allAuthors().map(function(author) { return template({val: author}); });
     if ($('#author-filter option').length < 2) { // Prevent duplication
       $('#author-filter').append(options);
     };
 
+    // Drew's comment: The variable 'options' is declared to populate the category filter
     // Example of using model method with async, SQL-based approach:
     // This approach is DOM-independent, since it reads from the DB directly.
     Article.allCategories(function(rows) {
@@ -38,6 +41,7 @@
   };
 
   // COMMENT: What does this method do?  What is it's execution path?
+  // Drew's comment: jQuery finds the element with id="filters", and when it's changed, the variable 'resource' is declared as either the author or category that is selected. Then, a route is created that includes 'resource'
   articleView.handleFilters = function() {
     $('#filters').one('change', 'select', function() {
       resource = this.id.replace('-filter', '');
@@ -118,6 +122,7 @@
   };
 
   // COMMENT: What does this method do?  What is it's execution path?
+  // Drew's comment: The function expression which is defined in the 'articleView.index' method is passed an articles parameter. Then, the jQuery matched selection with id="articles" has the .show method applied to it and the .hide method is applied to the sibling elements of the matched selection. Following this, the jQuery matched selection with id="articles" and the children article elements of the matched selecion have the .remove method applied to them. Then, the .forEach method of the articles array is applied to append the rendered article templates to the jQuery matched selection with id="articles", updating the DOM
   articleView.index = function(articles) {
     $('#articles').show().siblings().hide();
 
@@ -128,6 +133,7 @@
 
     articleView.populateFilters();
     // COMMENT: What does this method do?  What is it's execution path?
+    // Drew's comment: The .handleFilters method of the articleView object is called
     articleView.handleFilters();
 
     // DONE: Replace setTeasers with just the truncation logic, if needed:
